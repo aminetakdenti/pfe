@@ -1,0 +1,7 @@
+flask>=3.0.0
+numpy>=1.26.0
+pandas>=2.1.0
+black>=23.0.0  # Formatter
+flake8>=6.0.0  # Linter
+pytest>=7.0.0  # Testing
+scikit-learn
