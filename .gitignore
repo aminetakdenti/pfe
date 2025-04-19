@@ -3,3 +3,4 @@ processed_chunks/
 temp_extract/
 cleaned_chunks/
 *.log
+numeric_data/

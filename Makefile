@@ -6,6 +6,9 @@ run:
 remove_default_features:
 	@.venv/bin/python src/remove_default_features.py
 
+convert_to_numeric_type:
+	@.venv/bin/python src/convert_to_numeric_type.py
+
 install:
 	@.venv/bin/pip install -r requirements.txt
 
