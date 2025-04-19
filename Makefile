@@ -3,11 +3,8 @@
 run:
 	@.venv/bin/python src/main.py
 
-runtest:
-	@.venv/bin/python src/helpers/main.py
-
-preprocessing:
-	@.venv/bin/python src/preprocessing.py
+remove_default_features:
+	@.venv/bin/python src/remove_default_features.py
 
 install:
 	@.venv/bin/pip install -r requirements.txt
