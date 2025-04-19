@@ -1,2 +1,5 @@
 src/data/
 processed_chunks/
+temp_extract/
+cleaned_chunks/
+*.log
