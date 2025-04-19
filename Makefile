@@ -3,6 +3,12 @@
 run:
 	@.venv/bin/python src/main.py
 
+runtest:
+	@.venv/bin/python src/helpers/main.py
+
+preprocessing:
+	@.venv/bin/python src/preprocessing.py
+
 install:
 	@.venv/bin/pip install -r requirements.txt
 
