@@ -54,15 +54,20 @@ def preprocess_chunks(folder_path, output_folder):
             # Read the CSV file
             # Use low_memory=False for potentially large files with mixed types
             df = pd.read_csv(file_path, low_memory=False)
-            # print(f"  Successfully read '{file_basename}' with shape: {df.shape}")
+            df.columns = df.columns.str.strip()
+            print(f"  Successfully read '{file_basename}' with shape: {df.shape}")
 
             # --- Numeric Type Conversion ---
             print(f"  Attempting numeric conversion for columns...")
             for col in df.columns:
                 # Skip columns that are in our exclusion list
                 if col in COLUMNS_TO_EXCLUDE_FROM_NUMERIC_CONVERSION:
-                    # print(f"    Skipping conversion for excluded column: '{col}'")
-                    continue
+                    print(f"    convert label to 1 if it's attack and 0 if not")
+                    print("Unique label values:", df['Label'].unique())
+
+                    df['Label'] = df['Label'].apply(lambda x: 0 if x == 'BENIGN' else 1)
+
+                    print("Unique label values:", df['Label'].unique())
 
                 # Attempt to convert the column to numeric
                 # errors='coerce' will turn any values that cannot be converted into NaN
@@ -74,16 +79,6 @@ def preprocess_chunks(folder_path, output_folder):
                     print(
                         f"    Warning: Could not convert column '{col}' to numeric: {e}"
                     )
-
-            # Optional: After coercing non-numeric to NaN, you might want to handle NaNs again
-            # depending on your modeling needs (e.g., impute or drop rows/columns)
-            # Example: Drop rows that now have NaNs after conversion (be cautious!)
-            # initial_rows_after_conversion = len(df)
-            # df.dropna(inplace=True)
-            # if len(df) < initial_rows_after_conversion:
-            #     print(
-            #         f"  Dropped {initial_rows_after_conversion - len(df)} rows with new NaN values after conversion."
-            #     )
 
             # --- End Numeric Type Conversion ---
 
