@@ -1,3 +1,4 @@
+import os
 import random
 import numpy as np
 import pandas as pd
@@ -47,11 +48,11 @@ class DeepQNetwork(nn.Module):
         super(DeepQNetwork, self).__init__()
         
         self.network = nn.Sequential(
-            nn.Linear(input_dim, 64),
+            nn.Linear(input_dim, 128),
             nn.ReLU(),
-            nn.Linear(64, 32),
+            nn.Linear(128, 128),
             nn.ReLU(),
-            nn.Linear(32, output_dim)
+            nn.Linear(128, output_dim)
         )
     
     def forward(self, x):
@@ -219,7 +220,7 @@ class DQNTrainer:
 
 def main():
     # Load and preprocess data
-    data = pd.read_csv('data/ids_data.csv')
+    data = pd.read_csv('src/data/ids_data.csv')
     
     # Separate features and labels
     X = data.iloc[:, 1:-1].values  # Exclude first and last columns

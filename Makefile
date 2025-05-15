@@ -1,5 +1,8 @@
 .PHONY: run install test clean
 
+runModel:
+	@.venv/bin/python src/model.py
+
 run:
 	@.venv/bin/python src/main.py
 

@@ -1,0 +1,86 @@
+3.2.2.1. DQN. The algorithm employed for training DQN (Mnih
+et al., 2013) is depicted in Fig. 5.
+The objective of the DQN model is to approximate the Q func-
+tion. A Q function provides the maximum expected reward under
+a specific state and action, therefore, depending on a state and ac-
+tion pair: Q(s, a). Once the Q function is obtained, then we can
+easily get the policy function which is the function that desig-
+nates the action to take for each state. The policy function de-
+pends on the state and it is derived from the Q function as fol-
+lows: Policy (s) = arga max(Q (s, a ) ). That is, it is the action that
+maximizes the Q-value.
+The algorithm depicted in Fig. 5 starts from a generic sample
+formed by the current state (st ), the ground-truth label for the
+current state (a∗
+t ) and the next state (st + 1 ).This generic sample is
+part of a mini-batch of n samples. The process followed to cre-
+ate this generic sample from the original dataset is presented in
+Section 3.2.1. Each training iteration of the algorithm will process
+all the samples of a mini-batch, and for each iteration a new mini-
+batch is built following the process shown in Section 3.2.1.
+A neural network (NN) is used as a function approximator for
+the Q function. We have used a simple NN of 3-layers, with ReLU
+activation for all layers, including the last one to ensure a positive
+Q-value. The NN training is done with a Mean Square Error loss
+between the Q-value estimated by the NN for the current state ( ̂ qt )
+and a reference value: qref , obtained by adding the current reward
+(rt ) to the Q-value for the next state ( ˆqt+1 ) multiplied by a discount
+factor (λ).
+The reward is a 1/0 reward associated, respectively, to a cor-
+rect/incorrect prediction. In Fig. 5, the ground truth label value for
+the current state is represented by a∗
+t and the predicted value by
+ˆat . When these two values are equal the reward is 1 and 0 other-
+wise.
+To obtain the predicted value for the current state ( ˆat ) we it-
+erate the Q function with the current state (st ) and all possible
+values of the label ({a}). This iteration is represented in Fig. 5 as:
+Q(st ,{a}), which is a vector of values and is shown as a thicker
+arrow: Q(st ,{a}) = [Q(st ,{a}0 ), Q(st ,{a}1 ),..Q(st ,{a}p )], where {a} is the
+set of all possible actions and p is the cardinality of this set.
+Then, we choose the action value which produces the max-
+imum Q-value obtained from this iteration: arga max(Q (st , {a}) ).
+The action chosen is further applied to an ε-greedy algorithm
+which selects that value with probability p or a random action
+with probability 1-p. The result of this last step provides the pre-
+dicted action ( ˆat ).
+The predicted action for the next state ( ˆat+1 ) is obtained in
+a similar way but ignoring the ε-greedy selection (right part in
+Fig. 5). This predicted action together with the next state (st + 1 )
+is used to obtain the Q-value for the next state ( ˆqt+1 ) which is
+used to calculate qref (right part in Fig. 5). The prediction of the
+Q-value for the next state ( ˆqt+1 ), as presented on the right part of
+Fig. 5, can be simplified to: ˆqt+1 = maxa Q (st+1 , {a} ).
+The best performance was obtained by applying a small value
+for the discount factor (λ). Small values of λ give more importance
+to learning the current reward, regardless of the succession of fu-
+ture rewards. This makes sense, considering that (1) the next state
+is uncorrelated with the present state, and (2) we are actually im-
+plementing a classifier disguised as a DRL algorithm, being the real
+goal to make a correct prediction for the current state (current re-
+ward).
+In order to make a faster algorithm, our final model used for
+DQN was slightly modified with respect to the one shown in
+Fig. 5. The network implementation for the Q function consists
+of two input vectors (state and action) and one scalar as output
+(Q-value). This architecture requires iterating the network with all
+the action values to recognize the value that maximizes the Q
+function. This iteration slows down the process. As a solution, in
+Mnih et al. (2013) is presented an alternative network architecture
+with a single input vector (state) and one output vector with the
+same length as the number of action values (i.e. number of intru-
+sion classes, since they are one-hot encoded). In this way, each el-
+ement of the output vector has the Q-value of its associated action
+value through a single iteration.
+Besides the 1/0 reward we tested other distance functions
+between the predicted and true labels (actions), such as cross-
+entropy and hinge function. Of all the functions analyzed, the 1/0
+reward is the one that has provided the best results, despite its
+simplicity.
+Once the training of the model is completed, the NN imple-
+menting the Q function is used for prediction. For a particular
+state, the Q function will provide a Q-value for each of the pos-
+sible actions for that state. The predicted action is the one that
+maximizes the Q-value (no ε-greedy applied for prediction).
+The model was trained for 10 epochs, where an epoch is a num-
+ber of iterations enough to cover the complete dataset

@@ -1,0 +1,19 @@
+3.2.1. Datasets preparation
+A generic task for all models is to handle the dataset to create
+the mini-batches (set of samples used in a training iteration) that
+each specific model will use. The training dataset contains N sam-
+ples of network features and associated intrusion labels with sev-
+eral possible values (binary or multiclass anomaly). To assimilate
+these elements to DRL concepts, we consider the network features
+as states and the label values as actions. The training is performed
+with mini-batches of samples formed by: (1) a state, (2) its correct
+label and (3) a next state.
+A mini-batch will be a subset of samples drawn at random from
+the dataset. Each training pass is done with a different mini-batch
+that is updated by random sampling from the dataset.
+Fig. 3 shows the structure of a mini-batch used by the DQN,
+DDQN and actor-critic models. In this case, a mini-batch is formed
+by n + 1 random samples of the dataset. The generation process
+for each mini-batch is to randomly permute the dataset before
+the process is initiated, and then choose n + 1 consecutive samples
+starting from a random index (t).

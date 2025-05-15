@@ -6,3 +6,4 @@ imblearn
 joblib
 matplotlib
 seaborn
+torch
