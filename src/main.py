@@ -21,6 +21,8 @@ def process_large_dataset(zip_path, chunk_size=100000):
     chunk_files = []
     chunk_counter = 0
 
+    ds_dim = {}
+
     try:
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             for file in zip_ref.namelist():
@@ -34,6 +36,8 @@ def process_large_dataset(zip_path, chunk_size=100000):
                     # Process file in chunks
                     chunk_index = 0
                     for chunk in pd.read_csv(extract_path, chunksize=chunk_size):
+                        chunk.columns = chunk.columns.str.strip()
+                        # attacks 
                         # Basic cleaning for each chunk
                         chunk = chunk.dropna()
 
